@@ -1,4 +1,4 @@
-typedef enum{
+typedef enum TokenType{
     // Keywords: 1-9
     T_BIGIN = 1,
     T_END = 2,

@@ -7,6 +7,8 @@
 #include <ctype.h>
 #include <stdbool.h>
 
+#define MAXPATHLEN 256
+
 void error(const char *msg);
 void warning(const char *msg);
 
