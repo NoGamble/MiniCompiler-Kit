@@ -20,10 +20,15 @@ void lexerCleanup(LexerState *state);
 Token getNextToken(LexerState *state);
 void runLexer(const char *sourcePath, const char *outputPath);
 
-Token getKeywordType(const char *lexme);
+TokenType getKeywordType(const char *lexme);
+
+Token handleIdentifier(LexerState *state);
+Token handleNum(LexerState *state);
+Token handleOperator(LexerState *state);
 
 int getChar(LexerState *state);
 void ungetChar(LexerState *state, int ch);
 void skipComment(LexerState *state);
+void skipSpace(LexerState *state);
 
 #endif

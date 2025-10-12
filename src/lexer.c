@@ -1,4 +1,5 @@
 #include "../include/lexer.h"
+#include "../include/keywords.h"
 
 LexerState* lexerInit(const char *sourcePath, const char *outputPath)
 {
@@ -15,7 +16,7 @@ LexerState* lexerInit(const char *sourcePath, const char *outputPath)
         lexerCleanup(state);
         error("Cann't open the source file!");
     }
-    char output[MAXPATHLEN];
+    char output[MAX_PATH_LEN];
     snprintf(output, sizeof(output), "%s.dyd", outputPath);
     state->outputFile = fopen(output, "w");
     if(!state->outputFile)
@@ -48,10 +49,72 @@ void lexerCleanup(LexerState *state)
     }
 }
 
-Token getNextToken(LexerState *state)
+Token handleIdentifier(LexerState *state)
+{
+    Token token;
+    int index = 0;
+    while(isalnum(state->lookhead) || state->lookhead == '_' && state->lookhead != EOF)
+    {
+        if(index < MAX_IDENTIFERLEN_LEN)
+        {
+            token.lexme[index] = state->lookhead;
+            index++;
+        }
+        state->lookhead = getChar(state);
+    }
+    token.lexme[index] = '\0';
+    token.type = getKeywordType(token.lexme);
+    token.line = state->currentLine;
+    return token;
+}
+
+Token handleNum(LexerState *state)
+{
+    Token token;
+    int index;
+    while(isdigit(state->lookhead) && state->lookhead != EOF)
+    {
+        if(index < MAX_NUMBER_LEN)
+        {
+            token.lexme[index] = state->lookhead;
+            index ++;
+        }
+    }
+    token.lexme[index] = '\0';
+    token.type = T_NUMBER;
+    return token;
+}
+
+Token handleOperator(LexerState *state)
 {
 
 }
+
+Token getNextToken(LexerState *state)
+{
+    Token token;
+    while(state->lookhead != EOF)
+    {
+        skipSpace(state);
+        skipComment(state);
+        if(state->lookhead == EOF)
+        {
+            break;
+        }
+        if(isalpha(state->lookhead) || state->lookhead == '_')
+        {
+            return handleIdentifier(state);
+        }
+        else if(isdigit(state->lookhead))
+        {
+            return handleNum(state);
+        }
+        else {
+            return handleOperator(state);
+        }
+    }
+}
+
 void runLexer(const char *sourcePath, const char *outputPath)
 {
     LexerState* state = lexerInit(sourcePath, outputPath);
@@ -95,17 +158,39 @@ void skipComment(LexerState *state)
         state->lookhead = getChar(state);
         if(state->lookhead == '*')
         {
-
+            
         }
         else if(state->lookhead == '/')
         {
-            
+            while(state->lookhead != '\n' && state->lookhead != EOF)
+            {
+                state->lookhead = getChar(state);
+            }
+        }
+        else{
+
         }
     }
 
 }
 
-Token getKeywordType(const char *lexme)
+void skipSpace(LexerState *state)
 {
+    if(isspace(state->lookhead) && state->lookhead != EOF)
+    {
+        state->lookhead = getChar(state);
+    }
+}
+
+TokenType getKeywordType(const char *lexme)
+{
+    for(int i=0; keywords[i].keyword != NULL; i++)
+    {
+        if(strcmp(lexme, keywords[i].keyword) == 0)
+        {
+            return keywords[i].type;
+        }
+    }
+    return T_INDENTIFIER;
 
 }
