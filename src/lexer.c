@@ -79,7 +79,33 @@ int getChar(LexerState *state)
     return ch;
 }
 
+void ungetChar(LexerState *state, int ch)
+{
+    ungetc(ch, state->sourceFile);
+    if(ch == '\n')
+    {
+        state->currentLine--;
+    }
+}
+
+void skipComment(LexerState *state)
+{
+    if(state->lookhead == '/')
+    {
+        state->lookhead = getChar(state);
+        if(state->lookhead == '*')
+        {
+
+        }
+        else if(state->lookhead == '/')
+        {
+            
+        }
+    }
+
+}
+
 Token getKeywordType(const char *lexme)
 {
-    
+
 }

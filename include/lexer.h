@@ -23,6 +23,7 @@ void runLexer(const char *sourcePath, const char *outputPath);
 Token getKeywordType(const char *lexme);
 
 int getChar(LexerState *state);
-
+void ungetChar(LexerState *state, int ch);
+void skipComment(LexerState *state);
 
 #endif
