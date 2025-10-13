@@ -11,7 +11,7 @@ typedef struct
     FILE *errorFile;
     int currentLine;
     int currentChar;
-    int lookhead;
+    int lookahead;
 
 } LexerState;
 

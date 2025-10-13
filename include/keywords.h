@@ -9,7 +9,7 @@ typedef struct
 } Keyword;
 
 static Keyword keywords[] = {
-    {"begin", T_BIGIN},
+    {"begin", T_BEGIN},
     {"end", T_END},
     {"integer", T_INTEGER},
     {"if", T_IF},
@@ -18,7 +18,7 @@ static Keyword keywords[] = {
     {"function", T_FUNCTION},
     {"read", T_READ},
     {"write", T_WRITE},
-    {NULL, T_INDENTIFIER}
+    {NULL, T_IDENTIFIER}
 };
 
 #endif

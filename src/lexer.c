@@ -33,7 +33,7 @@ LexerState* lexerInit(const char *sourcePath, const char *outputPath)
     }
     state->currentLine = 1;
     state->currentChar = 0;
-    state->lookhead = ' ';
+    state->lookahead = ' ';
 
     return state;
 }
@@ -53,14 +53,14 @@ Token handleIdentifier(LexerState *state)
 {
     Token token;
     int index = 0;
-    while(isalnum(state->lookhead) || state->lookhead == '_' && state->lookhead != EOF)
+    while(isalnum(state->lookahead) || state->lookahead == '_' && state->lookahead != EOF)
     {
         if(index < MAX_IDENTIFERLEN_LEN)
         {
-            token.lexme[index] = state->lookhead;
+            token.lexme[index] = state->lookahead;
             index++;
         }
-        state->lookhead = getChar(state);
+        state->lookahead = getChar(state);
     }
     token.lexme[index] = '\0';
     token.type = getKeywordType(token.lexme);
@@ -72,40 +72,56 @@ Token handleNum(LexerState *state)
 {
     Token token;
     int index;
-    while(isdigit(state->lookhead) && state->lookhead != EOF)
+    while(isdigit(state->lookahead) && state->lookahead != EOF)
     {
         if(index < MAX_NUMBER_LEN)
         {
-            token.lexme[index] = state->lookhead;
+            token.lexme[index] = state->lookahead;
             index ++;
         }
     }
     token.lexme[index] = '\0';
     token.type = T_NUMBER;
+    token.line = state->currentLine;
     return token;
 }
 
 Token handleOperator(LexerState *state)
 {
+    Token token;
+    token.line = state->currentLine;
+    switch(state->lookahead)
+    {
+        case ':':
+            state->lookahead = getChar(state);
+            if(state->lookahead == '=')
+            {
+                strcpy(token.lexme, ":=");
+                token.type = T_ASSIGN;
+            } else {
+                // error();
+            }
+    }
 
+    return token;
 }
 
 Token getNextToken(LexerState *state)
 {
     Token token;
-    while(state->lookhead != EOF)
+    while(state->lookahead != EOF)
     {
         skipSpace(state);
         skipComment(state);
-        if(state->lookhead == EOF)
+        if(state->lookahead == EOF)
         {
             break;
         }
-        if(isalpha(state->lookhead) || state->lookhead == '_')
+        if(isalpha(state->lookahead) || state->lookahead == '_')
         {
             return handleIdentifier(state);
         }
-        else if(isdigit(state->lookhead))
+        else if(isdigit(state->lookahead))
         {
             return handleNum(state);
         }
@@ -151,24 +167,30 @@ void ungetChar(LexerState *state, int ch)
     }
 }
 
-void skipComment(LexerState *state)
+void skipComment(LexerState *state) // after this function, lookahead should be the next valid letter.
 {
-    if(state->lookhead == '/')
+    if(state->lookahead == '/')
     {
-        state->lookhead = getChar(state);
-        if(state->lookhead == '*')
+        state->lookahead = getChar(state);
+        if(state->lookahead == '*')
         {
+            state->lookahead = getChar(state);
             
         }
-        else if(state->lookhead == '/')
+        else if(state->lookahead == '/')
         {
-            while(state->lookhead != '\n' && state->lookhead != EOF)
+            while(state->lookahead != '\n' && state->lookahead != EOF) //until lookahead == '\n'
             {
-                state->lookhead = getChar(state);
+                state->lookahead = getChar(state);
+                if (state->lookahead == EOF) {
+                    fprintf(state->errorFile, "***LINE:%d Unclosed comment\n", state->currentLine);
+                    break;
+                }
             }
+            state->lookahead = getChar(state); // to the next valid letter
         }
         else{
-
+            
         }
     }
 
@@ -176,9 +198,9 @@ void skipComment(LexerState *state)
 
 void skipSpace(LexerState *state)
 {
-    if(isspace(state->lookhead) && state->lookhead != EOF)
+    if(isspace(state->lookahead) && state->lookahead != EOF)
     {
-        state->lookhead = getChar(state);
+        state->lookahead = getChar(state);
     }
 }
 
@@ -191,6 +213,6 @@ TokenType getKeywordType(const char *lexme)
             return keywords[i].type;
         }
     }
-    return T_INDENTIFIER;
+    return T_IDENTIFIER;
 
 }

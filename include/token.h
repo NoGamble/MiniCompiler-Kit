@@ -1,6 +1,6 @@
 typedef enum TokenType{
     // Keywords: 1-9
-    T_BIGIN = 1,
+    T_BEGIN = 1,
     T_END = 2,
     T_INTEGER = 3,
     T_IF = 4,
@@ -11,7 +11,7 @@ typedef enum TokenType{
     T_WRITE = 9,
     
     // Identifiers and literals: 10-11
-    T_INDENTIFIER = 10,     // Variable/function names
+    T_IDENTIFIER = 10,     // Variable/function names
     T_NUMBER = 11,          // Numeric constants
 
     // Operators and delimiters: 12-23
