@@ -112,12 +112,19 @@ Token getNextToken(LexerState *state)
     while(state->lookahead != EOF)
     {
         skipSpace(state);
-        skipComment(state);
+        // skipComment(state); To be updated...
         if(state->lookahead == EOF)
         {
             break;
         }
-        if(isalpha(state->lookahead) || state->lookahead == '_')
+        if(state->lookahead == '\n')
+        {
+            token.type = T_EOLN;
+            strcmp(token.lexme, "EOLN");
+            token.line = state->currentLine - 1;
+            return token;
+        }
+        else if(isalpha(state->lookahead) || state->lookahead == '_')
         {
             return handleIdentifier(state);
         }
@@ -129,6 +136,10 @@ Token getNextToken(LexerState *state)
             return handleOperator(state);
         }
     }
+    strcpy(token.lexme, "EOF");
+    token.type = T_EOF;
+    token.line = state->currentLine;
+    return token;
 }
 
 void runLexer(const char *sourcePath, const char *outputPath)
@@ -167,7 +178,7 @@ void ungetChar(LexerState *state, int ch)
     }
 }
 
-void skipComment(LexerState *state) // after this function, lookahead should be the next valid letter.
+void skipComment(LexerState *state) // To be updated ...
 {
     if(state->lookahead == '/')
     {
@@ -175,7 +186,10 @@ void skipComment(LexerState *state) // after this function, lookahead should be 
         if(state->lookahead == '*')
         {
             state->lookahead = getChar(state);
-            
+            if(state->lookahead == '*')
+            {
+
+            }
         }
         else if(state->lookahead == '/')
         {
@@ -187,7 +201,6 @@ void skipComment(LexerState *state) // after this function, lookahead should be 
                     break;
                 }
             }
-            state->lookahead = getChar(state); // to the next valid letter
         }
         else{
             
