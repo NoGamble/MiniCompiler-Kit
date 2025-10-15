@@ -79,6 +79,7 @@ Token handleNum(LexerState *state)
             token.lexme[index] = state->lookahead;
             index ++;
         }
+        state->lookahead = getChar(state);
     }
     token.lexme[index] = '\0';
     token.type = T_NUMBER;
@@ -101,6 +102,8 @@ Token handleOperator(LexerState *state)
             } else {
                 // error();
             }
+        case '=':
+            state->lookahead = getChar(state);
     }
 
     return token;
@@ -198,6 +201,7 @@ void skipComment(LexerState *state) // To be updated ...
                 state->lookahead = getChar(state);
                 if (state->lookahead == EOF) {
                     fprintf(state->errorFile, "***LINE:%d Unclosed comment\n", state->currentLine);
+                    // Error();
                     break;
                 }
             }
