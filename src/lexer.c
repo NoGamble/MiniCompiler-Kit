@@ -104,6 +104,7 @@ Token handleOperator(LexerState *state)
             }
         case '=':
             state->lookahead = getChar(state);
+            // if(state->lookahead == '=')
     }
 
     return token;
