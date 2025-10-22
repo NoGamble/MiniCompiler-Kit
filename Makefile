@@ -1,38 +1,43 @@
 CC = clang
 CFLAGS = -Wall -Wextra -std=c17 -g -Iinclude
 LDFLAGS =
-# Apple Silicon优化
+
+# Apple Silicon optimization: NoGamble is on mac M2
 UNAME_ARCH := $(shell uname -m)
 ifeq ($(UNAME_ARCH), arm64)
     CFLAGS += -mcpu=native
 endif
 
+# DIR config
 SRCDIR = src
 INCDIR = include
 BINDIR = bin
 OUTDIR = output
+TESTDIR = test
 
+
+# File list
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 TARGET = $(BINDIR)/minic	
 all: $(TARGET)
 
-# 链接可执行文件
+# Build targets
 $(TARGET): $(SOURCES)
 	@mkdir -p $(BINDIR)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
-	@echo "编译完成: $@"
+	@echo "Build completed: $@"
 
-# 清理
+# Clean build artifacts
 clean:
 	rm -rf $(BINDIR)
-	@echo "清理构建文件..."
+	@echo "Cleaned buiid files: "
 
-# 运行测试（需手动创建test目录）
+# test
 test: $(TARGET)
 	@if [ -d "test" ]; then \
 		./$(TARGET) test/test.src output; \
 	else \
-		echo "请先创建 test/test.src 文件"; \
+		echo "Please create test/test.src file first"; \
 	fi
 
 .PHONY: all clean test
