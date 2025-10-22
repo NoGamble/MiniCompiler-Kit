@@ -100,11 +100,75 @@ Token handleOperator(LexerState *state)
                 strcpy(token.lexme, ":=");
                 token.type = T_ASSIGN;
             } else {
-                // error();
+                strcpy(token.lexme, ":");
+                token.type = T_UNKNOWN;
             }
-        case '=':
+            break;
+        case '<':
             state->lookahead = getChar(state);
-            // if(state->lookahead == '=')
+            if(state->lookahead == '=')
+            {
+                strcpy(token.lexme, "<=");
+                token.type = T_LE;
+                state->lookahead = getChar(state);
+            }
+            else if(state->lookahead == '>')
+            {
+                strcpy(token.lexme, "<>");
+                token.type = T_NEQ;
+                state->lookahead = getChar(state);
+            }
+            else{
+                strcpy(token.lexme, "<");
+                token.type = T_LT;
+            }
+            break;
+        case '>':
+            state->lookahead = getChar(state);
+            if(state->lookahead == '=')
+            {
+                strcpy(token.lexme, ">=");
+                token.type = T_GE;
+                state->lookahead = getChar(state);
+            }
+            else
+            {
+                strcpy(token.lexme, ">");
+                token.type = T_GT;
+            }
+            break;
+        case '=':
+            strcpy(token.lexme, "=");
+            token.type = T_EQ;
+            state->lookahead = getChar(state);
+            break;
+        case '-':
+            strcpy(token.lexme, "-");
+            token.type = T_MINUS;
+            state->lookahead = get_char(state);
+            break;
+        case '*':
+            strcpy(token.lexme, "*");
+            token.type = T_MUL;
+            state->lookahead = get_char(state);
+            break;
+        case '(':
+            strcpy(token.lexme, "(");
+            token.type = T_LPAREN;
+            state->lookahead = get_char(state);
+            break;
+        case ')':
+            strcpy(token.lexme, ")");
+            token.type = T_RPAREN;
+            state->lookahead = get_char(state);
+            break;
+        default:
+            token.lexme[0] = state->lookahead;
+            token.lexme[1] = '\0';
+            token.type = T_UNKNOWN;
+            state->lookahead = get_char(state);
+            break;
+
     }
 
     return token;

@@ -30,7 +30,10 @@ typedef enum TokenType{
 
     // Special tokens
     T_EOLN = 24,
-    T_EOF = 25
+    T_EOF = 25,
+
+    //Unknown or error
+    T_UNKNOWN = 26
 
 } TokenType;
 
