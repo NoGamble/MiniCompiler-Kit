@@ -54,8 +54,11 @@ dkms.conf
 # debug information files
 *.dwo
 
+# runtime output files
 output/
 *.dyd
 *.err
 
-bin/minic
+# build artifacts
+bin/
+*.o
