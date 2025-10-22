@@ -1,9 +1,8 @@
 #include "../include/lexer.h"
-#include "../include/keywords.h"
 
 LexerState* lexerInit(const char *sourcePath, const char *outputPath)
 {
-    LexerState* state = (LexerState*)(sizeof(LexerState));
+    LexerState* state = (LexerState*) malloc(sizeof(LexerState));
     if(!state)
     {
         error("Memory allocation failed!");
@@ -24,7 +23,7 @@ LexerState* lexerInit(const char *sourcePath, const char *outputPath)
         lexerCleanup(state);
         error("Cann't create output file!");
     }
-    snprintf(output, siezof(output), "%s.err", outputPath);
+    snprintf(output, sizeof(output), "%s.err", outputPath);
     state->errorFile = fopen(output, "w");
     if(!state->errorFile)
     {
@@ -53,7 +52,7 @@ Token handleIdentifier(LexerState *state)
 {
     Token token;
     int index = 0;
-    while(isalnum(state->lookahead) || state->lookahead == '_' && state->lookahead != EOF)
+    while((isalnum(state->lookahead) || state->lookahead == '_') && state->lookahead != EOF)
     {
         if(index < MAX_IDENTIFERLEN_LEN)
         {
@@ -71,7 +70,7 @@ Token handleIdentifier(LexerState *state)
 Token handleNum(LexerState *state)
 {
     Token token;
-    int index;
+    int index = 0;
     while(isdigit(state->lookahead) && state->lookahead != EOF)
     {
         if(index < MAX_NUMBER_LEN)
@@ -145,28 +144,33 @@ Token handleOperator(LexerState *state)
         case '-':
             strcpy(token.lexme, "-");
             token.type = T_MINUS;
-            state->lookahead = get_char(state);
+            state->lookahead = getChar(state);
             break;
         case '*':
             strcpy(token.lexme, "*");
             token.type = T_MUL;
-            state->lookahead = get_char(state);
+            state->lookahead = getChar(state);
             break;
         case '(':
             strcpy(token.lexme, "(");
             token.type = T_LPAREN;
-            state->lookahead = get_char(state);
+            state->lookahead = getChar(state);
             break;
         case ')':
             strcpy(token.lexme, ")");
             token.type = T_RPAREN;
-            state->lookahead = get_char(state);
+            state->lookahead = getChar(state);
+            break;
+        case ';':
+            strcpy(token.lexme, ";");
+            token.type = T_SEMICOLON;
+            state->lookahead = getChar(state);
             break;
         default:
             token.lexme[0] = state->lookahead;
             token.lexme[1] = '\0';
             token.type = T_UNKNOWN;
-            state->lookahead = get_char(state);
+            state->lookahead = getChar(state);
             break;
     }
     return token;
@@ -278,7 +282,7 @@ void skipComment(LexerState *state) // To be updated ...
 
 void skipSpace(LexerState *state)
 {
-    if(isspace(state->lookahead) && state->lookahead != EOF)
+    while(isspace(state->lookahead) && state->lookahead != EOF)
     {
         state->lookahead = getChar(state);
     }

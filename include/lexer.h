@@ -3,6 +3,7 @@
 
 #include "token.h"
 #include "common.h"
+#include "keywords.h"
 
 typedef struct
 {
