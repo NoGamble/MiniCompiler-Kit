@@ -29,8 +29,10 @@ $(TARGET): $(SOURCES)
 
 # Clean build artifacts
 clean:
-	rm -rf $(BINDIR)
+	rm -rf $(BINDIR)/*
 	@echo "Cleaned buiid files: "
+	rm -rf $(OUTDIR)/*
+	@echo "Cleaned output files: "
 
 # test
 test: $(TARGET)
