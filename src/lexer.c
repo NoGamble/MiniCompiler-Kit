@@ -168,9 +168,7 @@ Token handleOperator(LexerState *state)
             token.type = T_UNKNOWN;
             state->lookahead = get_char(state);
             break;
-
     }
-
     return token;
 }
 
