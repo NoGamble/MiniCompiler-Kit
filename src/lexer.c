@@ -190,8 +190,9 @@ Token getNextToken(LexerState *state)
         if(state->lookahead == '\n')
         {
             token.type = T_EOLN;
-            strcmp(token.lexme, "EOLN");
-            token.line = state->currentLine - 1;
+            strcpy(token.lexme, "EOLN");
+            token.line = state->currentLine;
+            state->lookahead = getChar(state);
             return token;
         }
         else if(isalpha(state->lookahead) || state->lookahead == '_')
@@ -282,7 +283,7 @@ void skipComment(LexerState *state) // To be updated ...
 
 void skipSpace(LexerState *state)
 {
-    while(isspace(state->lookahead) && state->lookahead != EOF)
+    while(state->lookahead == ' ' && state->lookahead != EOF)
     {
         state->lookahead = getChar(state);
     }
