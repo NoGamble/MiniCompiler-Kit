@@ -8,7 +8,7 @@
 #include <stdbool.h>
 
 #define MAX_PATH_LEN 256
-#define MAX_IDENTIFERLEN_LEN 32
+#define MAX_IDENTIFERLEN_LEN 16
 #define MAX_NUMBER_LEN 32
 
 void error(const char *msg);

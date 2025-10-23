@@ -17,6 +17,7 @@ static Keyword keywords[] = {
     {"function", T_FUNCTION},
     {"read", T_READ},
     {"write", T_WRITE},
+    {"procedure", T_PROCEDURE},
     {NULL, T_IDENTIFIER}
 };
 
