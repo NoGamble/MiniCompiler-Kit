@@ -18,7 +18,7 @@ TESTDIR = test
 
 # File list
 SOURCES = $(wildcard $(SRCDIR)/*.c)
-TARGET = $(BINDIR)/minic.o
+TARGET = $(BINDIR)/MiniCompiler.o
 all: $(TARGET)
 
 # Build targets

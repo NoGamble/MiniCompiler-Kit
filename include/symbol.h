@@ -48,4 +48,13 @@ typedef struct{
     char currentProc[MAX_IDENTIFERLEN_LEN];
 } SymbolTable;
 
+SymbolTable* symtabInit(void);
+void symtabCleanup(SymbolTable *symtab);
+void symtabEnterProc(SymbolTable *symtab, const char *procname, ProcType ptype);
+void symtabExitProc(SymbolTable *symtab);
+int symtabAddVariable(SymbolTable *symtab, const char *varname, VarType vtype, VarKind vkind);
+
+void generateVarFile(SymbolTable *symtab, const char *filename);
+void generateProcFile(SymbolTable *symtab, const char *filename);
+
 #endif
