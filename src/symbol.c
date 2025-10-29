@@ -1,7 +1,7 @@
 #include "../include/symbol.h"
 #include "../include/common.h"
 
-void symtabInit(void)
+SymbolTable* symtabInit(void)
 {
     SymbolTable *symtab = (SymbolTable *)malloc(sizeof(SymbolTable));
     symtab->currentLevel = 0;
@@ -45,4 +45,9 @@ void generateProcFile(SymbolTable *symtab, const char *filename)
                 proc->fadr, proc->ladr);
     }
     fcloese(file);
+}
+
+void symCleanup(SymbolTable *symtab)
+{
+    free(symtab);
 }
