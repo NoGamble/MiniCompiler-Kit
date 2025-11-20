@@ -24,6 +24,12 @@ Execute the program by providing the input source file and the desired base name
 # Usage: ./bin/MiniCompiler.o <input_file.mini> <output_basename>
 ./bin/MiniCompiler.o test/test_1.mini output/mini_1
 ```
+### Clean the compiler
+To clean the generated files, run:
+
+```zsh
+make clean
+```
 
 ## 📤 Output Files
 After a successful run, the following files will be generated in the specified output directory (e.g., output/):
