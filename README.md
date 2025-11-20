@@ -21,8 +21,8 @@ This will generate an exucatable named complier.
 Execute the program by providing the input source file and the desired base name for the output files.
 
 ```zsh
-# Usage: ./compiler <input_file.mini> <output_basename>
-./compiler test/test_1.mini output/mini_1
+# Usage: ./bin/MiniCompiler.o <input_file.mini> <output_basename>
+./bin/MiniCompiler.o test/test_1.mini output/mini_1
 ```
 
 ## 📤 Output Files
