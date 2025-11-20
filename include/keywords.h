@@ -1,6 +1,7 @@
 #ifndef KEYWORDS_H
 #define KEYWORDS_H
 #include <stdio.h>
+#include "token.h"
 typedef struct
 {
     const char *keyword;

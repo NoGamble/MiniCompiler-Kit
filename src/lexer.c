@@ -98,6 +98,7 @@ Token handleOperator(LexerState *state)
             {
                 strcpy(token.lexme, ":=");
                 token.type = T_ASSIGN;
+                state->lookahead = getChar(state);
             } else {
                 strcpy(token.lexme, ":");
                 token.type = T_UNKNOWN;
@@ -259,7 +260,7 @@ void skipComment(LexerState *state) // To be updated ...
             state->lookahead = getChar(state);
             if(state->lookahead == '*')
             {
-
+                // unfinish
             }
         }
         else if(state->lookahead == '/')

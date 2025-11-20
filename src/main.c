@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../include/lexer.h"
+#include "../include/parse.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,5 +13,6 @@ int main(int argc, char *argv[])
     const char *sourcePath = argv[1];
     const char *outputPath = argv[2];
     runLexer(sourcePath, outputPath);
+    runParser(sourcePath, outputPath);
     return 0;
 }
