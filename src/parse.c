@@ -70,10 +70,7 @@ static void syntaxErrorExpect(Parser *p, TokenType expected)
 
 static void match(Parser *p, TokenType t)
 {
-    if(p->look.type == t)
-    {
-        next(p);
-    }
+    if(p->look.type == t) next(p);
     else
     {
         syntaxErrorExpect(p, t);
@@ -83,10 +80,7 @@ static void match(Parser *p, TokenType t)
 
 static void skipEOLN(Parser *p)
 {
-    while(p->look.type == T_EOLN)
-    {
-        next(p);
-    }
+    while(p->look.type == T_EOLN) next(p);
 }
 
 static int isRelop(TokenType t)
@@ -120,10 +114,7 @@ static void parseFactor(Parser *p)
         }
         (void)id;
     }
-    else if(p->look.type == T_NUMBER)
-    {
-        next(p);
-    }
+    else if(p->look.type == T_NUMBER) next(p);
     else
     {
         fprintf(p->lex->errorFile, "***LINE:%d Invalid factor\n",
@@ -266,10 +257,7 @@ static int parseDeclList(Parser *p)
             match(p, T_SEMICOLON);
             skipEOLN(p);
         }
-        else
-        {
-            break;
-        }
+        else break;
     }
     return had;
 }
@@ -286,10 +274,7 @@ static void parseStmtList(Parser *p)
         {
             parseStmt(p);
         }
-        else
-        {
-            break;
-        }
+        else break;
     }
 }
 
@@ -357,10 +342,7 @@ static void parseBlock(Parser *p)
     // stmt list
     parseStmtList(p);
     // outer block: recover to the last 'end' before EOF
-    if(p->look.type == T_END)
-    {
-        next(p);
-    }
+    if(p->look.type == T_END) next(p);
     else
     {
         int sawEnd = 0;
@@ -407,6 +389,8 @@ void runParser(const char *sourcePath, const char *outputPath)
     remove(parseDyd);
     p.sym = symtabInit();
     symtabEnterProc(p.sym, "global", PT_PROGRAM);
+    printf("----------------------------------------\n");
+    printf("Starting syntax analysis...\n");
     next(&p);
     parseBlock(&p);
     while(p.look.type != T_EOF)
@@ -419,6 +403,8 @@ void runParser(const char *sourcePath, const char *outputPath)
     snprintf(profile, sizeof(profile), "%s.pro", outputPath);
     generateVarFile(p.sym, varfile);
     generateProcFile(p.sym, profile);
+    printf("Syntax Analysis completed! \n Result has written to %s.err, %s.var, %s.pro\n", outputPath, outputPath, outputPath);
+    printf("----------------------------------------\n");
     symtabExitProc(p.sym);
     symtabCleanup(p.sym);
     lexerCleanup(p.lex);

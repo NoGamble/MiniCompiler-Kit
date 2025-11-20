@@ -218,6 +218,7 @@ void runLexer(const char *sourcePath, const char *outputPath)
 {
     LexerState* state = lexerInit(sourcePath, outputPath);
     Token token;
+    printf("========================================\n");
     printf("Starting lexical analysis...\n");
     do
     {
@@ -225,7 +226,8 @@ void runLexer(const char *sourcePath, const char *outputPath)
         fprintf(state->outputFile, "%s %d\n", token.lexme, token.type);
         // printf("Line %d: (%d, %s)\n", token.line, token.type, token.lexme); 
     } while (token.type != T_EOF);
-    printf("Lexical Analysis completed! Result has written to %s.dyd\n", outputPath); 
+    printf("Lexical Analysis completed! \n Result has written to %s.dyd\n", outputPath); 
+    printf("========================================\n");
     lexerCleanup(state);
 }
 
