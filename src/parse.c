@@ -397,6 +397,7 @@ void runParser(const char *sourcePath, const char *outputPath)
     {
         next(&p);
     }
+    symtabExitProc(p.sym);
     char varfile[256];
     char profile[256];
     snprintf(varfile, sizeof(varfile), "%s.var", outputPath);
@@ -405,7 +406,6 @@ void runParser(const char *sourcePath, const char *outputPath)
     generateProcFile(p.sym, profile);
     printf("Syntax Analysis completed! \n Result has written to %s.err, %s.var, %s.pro\n", outputPath, outputPath, outputPath);
     printf("----------------------------------------\n");
-    symtabExitProc(p.sym);
     symtabCleanup(p.sym);
     lexerCleanup(p.lex);
 }

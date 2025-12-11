@@ -20,6 +20,7 @@ SymbolTable* symtabInit(void)
     symtab->procCount= 0;
     symtab->varCount = 0;
     strcpy(symtab->currentProc, "global");
+    symtab->currentProcIndex = -1;
     return symtab;
 }
 
@@ -76,17 +77,28 @@ void symtabEnterProc(SymbolTable *symtab, const char *procname, ProcType ptype)
     symtab->currentLevel++;
     strncpy(symtab->currentProc, procname, MAX_IDENTIFERLEN_LEN - 1);
     symtab->currentProc[MAX_IDENTIFERLEN_LEN - 1] = '\0';
+    symtab->currentProcIndex = symtab->procCount - 1;
 }
 
 void symtabExitProc(SymbolTable *symtab)
 {
-    if(symtab->procCount > 0)
+    if(symtab->currentProcIndex >= 0)
     {
-        ProcedureEntry *proc = &symtab->procedures[symtab->procCount - 1];
-        proc->ladr = symtab->varCount - 1;
+        ProcedureEntry *proc = &symtab->procedures[symtab->currentProcIndex];
+        int last = proc->fadr - 1;
+        for(int i = symtab->varCount - 1; i >= proc->fadr; --i)
+        {
+            if(strcmp(symtab->varibles[i].vproc, proc->pname) == 0)
+            {
+                last = i;
+                break;
+            }
+        }
+        proc->ladr = last;
     }
     if(symtab->currentLevel > 0) symtab->currentLevel--;
     strcpy(symtab->currentProc, "global");
+    symtab->currentProcIndex = 0;
 }
 
 int symtabAddVariable(SymbolTable *symtab, const char *varname, VarType vtype, VarKind vkind)

@@ -46,6 +46,7 @@ typedef struct{
     int procCount;
     int currentLevel;
     char currentProc[MAX_IDENTIFERLEN_LEN];
+    int currentProcIndex;
 } SymbolTable;
 
 SymbolTable* symtabInit(void);
