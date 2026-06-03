@@ -1,5 +1,11 @@
-# MiniCompiler-Kit
-A lexical and syntactic analyzer kit for MINI-language, implemented in C. This educational project demostrates the core principle of compliers by transforming source code into a token stream and verify its syntactic structrure using recursive desent parsing.
+<h1 align="center">MiniCompiler-Kit</h1>
+<p align="center">A lexical and syntactic analyzer kit for MINI-language, implemented in <strong>C</strong>.</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/C-Language-00599C?logo=c&logoColor=white" alt="C">
+  <img src="https://img.shields.io/badge/Parser-Recursive_Descent-7B68EE" alt="Recursive Descent Parser">
+  <img src="https://img.shields.io/badge/Build-Makefile-427819?logo=gnu&logoColor=white" alt="Makefile">
+</p>
 
 ---
 ## 🛠️ Build & Usage
