@@ -62,3 +62,5 @@ output/
 # build artifacts
 bin/
 *.o
+
+.DS_Store
